@@ -187,6 +187,9 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
     [self sharedView].fadeOutAnimationDuration = duration;
 }
 
++ (void)rl_setIgnoreWindowLevel:(BOOL)ignoreWindowLevel{
+    [self sharedView].rl_ignoreWindowLevel = ignoreWindowLevel;
+}
 
 #pragma mark - Show Methods
 
@@ -599,7 +602,7 @@ static const CGFloat SVProgressHUDDefaultAnimationDuration = 0.15;
         for (UIWindow *window in frontToBackWindows) {
             BOOL windowOnMainScreen = window.screen == UIScreen.mainScreen;
             BOOL windowIsVisible = !window.hidden && window.alpha > 0;
-            BOOL windowLevelNormal = window.windowLevel == UIWindowLevelNormal;
+            BOOL windowLevelNormal = self.rl_ignoreWindowLevel || window.windowLevel == UIWindowLevelNormal;
             
             if(windowOnMainScreen && windowIsVisible && windowLevelNormal) {
                 [window addSubview:self.overlayView];
